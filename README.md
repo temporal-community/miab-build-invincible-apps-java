@@ -187,9 +187,15 @@ While you are demoing, narrate what you are doing as you are doing it.
 The more you speak, the more engaged the audience will be.
 We have provided scripts in areas below if you need them, but feel free to explain it in your own way if you feel comfortable doing so.
 
+**Note:** This application differs from other Meetup in a Boxes due to Temporal Springboot library. 
+The patterns that are used with Springboot vary slightly from the patterns that are present with other Temporal Java applications.
+These differences will be mentioned in the slides, but are not worth going into too much detail.
+The primary difference is the Worker auto registration.
+Workflows, Activities, and Timers are implemented as expected.
+
 ### Running the Application
 
-The sample application requires three terminal windows and a browser to run. 
+The sample application requires two terminal windows and a browser to run. 
 You can either open three separate terminals, or use a terminal multiplex such as `screen` or `tmux` to manage your terminals.
 
 1. In the first terminal, ensure your Temporal Service is running.
@@ -205,24 +211,20 @@ If not, run the following command to start the Temporal Service on port 8080 wit
     UI:      http://localhost:8080
     Metrics: http://localhost:65134/metrics
     ```
-2. In the second terminal, run the following commands to start the Temporal Worker:
+2. In the second terminal, run the following commands to start the Temporal Springboot application and Workers:
     1. Change directories into the `iplocate` directory:
         ```bash
         cd iplocate
         ```
-    2. Start the Temporal Worker:
+    2. Compile the code:
         ```bash
-        npm run start
+        mvn clean compile
         ```
-3. In the third terminal, run the following commands to start the web application:
-    1. Change directories into the `iplocate` directory:
+    3. Start the Springboot application
         ```bash
-        cd iplocate
+        mvn spring-boot:run
         ```
-    3. Start the web application on port `8000`:
-        ```bash
-        npm run start.server
-        ```
+
 4. Open a browser tab to [http://127.0.0.1:8000](http://127.0.0.1:8000) to view the web application.
 5. Open a browser tab to [http://127.0.0.1:8080](http://127.0.0.1:8080) to view the Temporal Web UI.
 
@@ -295,18 +297,16 @@ If a Timer fires and a Worker is not available, it will pick up when a Worker be
     2. Explain to the audience this is because there is no Worker running.
 8. Go back to the terminal and restart the Worker:
     ```bash
-    npm run start
+    mvn spring-boot:run
     ```
-9. The greeting should immediately return similar to the original:
-    ```
-    Hello, Ziggy!
-    Your IP Address is 256.256.256.256.
-    You are in Austin, Texas, United States
-    ```
+9. Explain Due to the Worker being tied to the Springboot application, and the application being completely restarted, the result will not appear in the web application. 
+   If multiple instance running of this application were running (on separate containers for example), it would have picked up the task and completed it.
 10. Open the Web UI and show that the Workflow continued execution and everything looks normal, as if nothing ever happened.
 11. Explain to the audience:
     > "The Worker resumed execution as if nothing happened. The first Activity was not re-executed. The state of the application was reconstructed from the Event History, and the result that was returned from the successful execution of the Activity the first time was used. The first Activity was not re-executed."
-> "Now lets say the Timer had been set to longer, for example, an hour, and we had recovered the Worker before it had fired, what would have happened?"
+
+    > "Now lets say the Timer had been set to longer, for example, an hour, and we had recovered the Worker before it had fired, what would have happened?"
+    
     **Answer:** The Timer would have fired and execution would have completed successfully, as if nothing had ever happened.
 13. Return to the web application and click the **Reset** button.
 
@@ -332,6 +332,10 @@ If a Timer fires and a Worker is not available, it will pick up when a Worker be
     temporal server start-dev --ui-port 8080 --db-filename temporal.db
     ```
 10. Refresh the Temporal WebUI and observe that the Workflow has completed.
+    1. This may take a bit. The Springboot application will eventually reestablish connection with the Temporal service. 
+    Click on the Workflow and check progress.
+    If it says there are no Workers running, refresh the page periodically.
+    Eventually the Workers will reconnect and the Workflow will complete.
 11. Return to the application and the greeting should have appeared as well.
 12. Open the Web UI and show that the Workflow continued execution and everything looks normal, as if nothing ever happened.
 13. Conclude your demo to the audience:
@@ -347,22 +351,26 @@ Comment
 
 1. Explain to the audience that Temporal can even let you fix bugs while the code is running, without having to stop execution:
     > "If you have a bug in your code, what do you usually have to do? Stop the code, fix it, and then restart the code. But what about in Temporal? If Activities are retried forever, and the previous state is saved, shouldn't we be able to fix the code, deploy it, and continue execution?"
-2. Open a text editor and modify `activities.ts`:
-    1. On line 10, modify the URL by removing the `h` in `http`. This will create an invalid URL, causing the Activity to fail.
-    2. Restart your Worker:
+2. Open a text editor and modify `IpLocateActivitiesImpl.java`:
+    1. On line 30, modify the URL by removing the `h` in `http`. This will create an invalid URL, causing the Activity to fail.
+    2. Recompile and restart the Springboot application:
         ```bash
-        npm run start
+        mvn clean compile
+        mvn spring-boot:run
         ```
 3. Enter an audience member's name in the text field **Enter your name** in the web application.
 4. Observe that a result was not displayed.
-5. Go to the Temporal Web UI and you'll see the `getLocationInfo` Activity is failing due to the invalid URL supplied.
-6. Return to your text editor and modify `activities.ts`, adding the `h` back to `http`.
+5. Go to the Temporal Web UI and scroll down to the Event History. 
+   You'll see the `getLocationInfo` Activity is failing due to the invalid URL supplied.
+6. Return to your text editor and modify `IpLocateActivitiesImpl.java`, adding the `h` back to `http`.
 7. Restart the Worker by first killing it with `CTRL-C` and then running:
     ```bash
-    npm run start
+    mvn clean compile
+    mvn spring-boot:run
     ```
 8. Wait until the **Next Retry** time passes, in which the change should be picked up, and the Activity should complete successfully.
-9. Switch back to the web application, where you should see the response.
+9. As with the previous example, explain Due to the Worker being tied to the Springboot application, and the application being completely restarted, the result will not appear in the web application. 
+   If multiple instance running of this application were running (on separate containers for example), it would have picked up the task and completed it.
 10. Open the Web UI and show that the Workflow continued execution and everything looks normal, as if nothing ever happened.
 11. Conclude your demo to the audience:
     > "If you have a bug in an Activity, and that Activity is failing, you can fix the bug and redeploy it, and Temporal will pick up this change and continue executing without losing the progress that was made previously."

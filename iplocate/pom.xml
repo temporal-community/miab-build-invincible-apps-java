@@ -52,6 +52,12 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- Fix MacOS DNS Resolver Error -->
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+        </dependency>
+
         <!-- WebClient for HTTP requests -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

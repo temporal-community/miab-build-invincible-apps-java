@@ -1,8 +1,9 @@
 # Compiled class file
 *.class
 *.DS_Store
+*.db
 
-**target/*
+**target*
 
 # Log file
 *.log

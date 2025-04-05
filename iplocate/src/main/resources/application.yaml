@@ -14,4 +14,3 @@ spring:
       packages:
         - iplocate.workflow
         - iplocate.activities
-   # spring.thymeleaf.cache=false 
