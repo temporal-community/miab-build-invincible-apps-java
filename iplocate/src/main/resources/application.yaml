@@ -1,0 +1,17 @@
+server:
+  port: 8000
+spring:
+  application:
+    name: iplocate
+  temporal:
+    namespace: default
+    connection:
+      target: 127.0.0.1:7233
+    workers:
+      - name: iplocate-worker
+        task-queue: iplocate-queue
+    workersAutoDiscovery:
+      packages:
+        - iplocate.workflow
+        - iplocate.activities
+   # spring.thymeleaf.cache=false 
