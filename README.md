@@ -195,7 +195,7 @@ Workflows, Activities, and Timers are implemented as expected.
 
 ### Running the Application
 
-The sample application requires two terminal windows and a browser to run. 
+The sample application requires three terminal windows and a browser to run. 
 You can either open three separate terminals, or use a terminal multiplex such as `screen` or `tmux` to manage your terminals.
 
 1. In the first terminal, ensure your Temporal Service is running.
@@ -212,9 +212,9 @@ If not, run the following command to start the Temporal Service on port 8080 wit
     Metrics: http://localhost:65134/metrics
     ```
 2. In the second terminal, run the following commands to start the Temporal Springboot application and Workers:
-    1. Change directories into the `iplocate` directory:
+    1. Change directories into the `iplocate/application` directory:
         ```bash
-        cd iplocate
+        cd iplocate/application
         ```
     2. Compile the code:
         ```bash
@@ -224,7 +224,19 @@ If not, run the following command to start the Temporal Service on port 8080 wit
         ```bash
         mvn spring-boot:run
         ```
-
+3. In the third terminal, run the following commands to start the Temporal Springboot contoller and the GUI:
+    1. Change directories into the `iplocate/controller` directory:
+        ```bash
+        cd iplocate/controller
+        ```
+    2. Compile the code:
+        ```bash
+        mvn clean compile
+        ```
+    3. Start the Springboot application
+        ```bash
+        mvn spring-boot:run
+        ```
 4. Open a browser tab to [http://127.0.0.1:8000](http://127.0.0.1:8000) to view the web application.
 5. Open a browser tab to [http://127.0.0.1:8080](http://127.0.0.1:8080) to view the Temporal Web UI.
 
@@ -292,16 +304,15 @@ If a Timer fires and a Worker is not available, it will pick up when a Worker be
 5. Immediately after, switch to the terminal with the Worker running, and press `CTRL-C` (or `CMD-C` if on Mac) to kill the Worker process.
     1. You want to be sure to kill the Worker before the Timer fires. 
 6. Wait ~10 seconds and show the audience that the results haven't appeared on the screen.
-7. Go to the Web UI and view the Event History.
+7. Go to the Temporal Web UI and view the Event History.
     1. Show the audience that the **Timer Started** and **Timer Fired** events have both been recorded, but nothing else has.
     2. Explain to the audience this is because there is no Worker running.
 8. Go back to the terminal and restart the Worker:
     ```bash
     mvn spring-boot:run
     ```
-9. Explain Due to the Worker being tied to the Springboot application, and the application being completely restarted, the result will not appear in the web application. 
-   If multiple instance running of this application were running (on separate containers for example), it would have picked up the task and completed it.
-10. Open the Web UI and show that the Workflow continued execution and everything looks normal, as if nothing ever happened.
+9. Show that the Application UI was updated.
+10. Open the Temporal Web UI and show that the Workflow continued execution and everything looks normal, as if nothing ever happened.
 11. Explain to the audience:
     > "The Worker resumed execution as if nothing happened. The first Activity was not re-executed. The state of the application was reconstructed from the Event History, and the result that was returned from the successful execution of the Activity the first time was used. The first Activity was not re-executed."
 
@@ -369,8 +380,7 @@ Comment
     mvn spring-boot:run
     ```
 8. Wait until the **Next Retry** time passes, in which the change should be picked up, and the Activity should complete successfully.
-9. As with the previous example, explain Due to the Worker being tied to the Springboot application, and the application being completely restarted, the result will not appear in the web application. 
-   If multiple instance running of this application were running (on separate containers for example), it would have picked up the task and completed it.
+9. Show that the application UI has been updated.
 10. Open the Web UI and show that the Workflow continued execution and everything looks normal, as if nothing ever happened.
 11. Conclude your demo to the audience:
     > "If you have a bug in an Activity, and that Activity is failing, you can fix the bug and redeploy it, and Temporal will pick up this change and continue executing without losing the progress that was made previously."
