@@ -1,9 +1,11 @@
-package iplocate;
+package iplocate.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import iplocate.model.WorkflowInput;
 import iplocate.model.WorkflowOutput;
 import iplocate.model.Constants;
-import iplocate.workflow.GetAddressFromIPWorkflow;
+import iplocate.model.GetAddressFromIPWorkflow;
 import io.temporal.client.WorkflowClient;
 import io.temporal.client.WorkflowOptions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -19,6 +22,8 @@ import java.time.format.DateTimeFormatter;
 
 @Controller
 public class IpLocateController {
+
+    private static final Logger logger = LoggerFactory.getLogger(IpLocateController.class);
 
     @Autowired 
     WorkflowClient workflowClient;
@@ -35,6 +40,9 @@ public class IpLocateController {
 
     @PostMapping("/greet")
     public String greet(@RequestParam String name, @RequestParam(required = false) Integer sleep_duration, Model model) {
+
+        logger.info("Received request to greet: {}", name);
+        
         WorkflowInput input = new WorkflowInput(name, sleep_duration != null ? sleep_duration : 0);
         
         String workflowId = "greeting-workflow-" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("HHmm"));

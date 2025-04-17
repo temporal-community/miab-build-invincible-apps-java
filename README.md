@@ -43,12 +43,12 @@ This demo will quickly demonstrate the difference between "normal" and durable e
 Normal execution is any execution that is not durable, so it is synonymous with the majority of code that is executed by most developers on a daily basis. 
 
 This demo will run a loop that counts from 1 to 10, sleeping for 1 second between each iteration, and logging the value to the screen.
-After the loop progresses a bit (about 4 or 5), the loop will be terminated.
+After the loop progresses a bit (about 4 or 5), you will terminate the loop.
 In a normal execution, restarting this process will cause the loop to start over from the beginning, but in a durable process we'll see that the execution resumes where it was, continuing the execution.
 
 ### Running the demo
 
-The sample application requires three terminal windows and a browser to run. 
+The sample application requires three terminal windows to run. 
 You can either open three separate terminals, or use a terminal multiplex such as `screen` or `tmux` to manage your terminals.
 
 1. In the first terminal, run the following command to start the Temporal Service on port 8080 with a persistent database:

@@ -1,4 +1,4 @@
-package iplocate.workflow;
+package iplocate.model;
 
 import iplocate.model.WorkflowInput;
 import iplocate.model.WorkflowOutput;
