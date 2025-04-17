@@ -24,15 +24,6 @@
     </properties>
 
     <dependencies>
-        <!-- Spring Boot -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
-        </dependency>
 
         <!-- Temporal -->
         <dependency>
@@ -53,12 +44,6 @@
             <groupId>io.temporal.iplocate</groupId>
             <artifactId>shared</artifactId>
             <version>1.0-SNAPSHOT</version>
-        </dependency>
-
-        <!-- Fix MacOS DNS Resolver Error -->
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-all</artifactId>
         </dependency>
 
         <!-- WebClient for HTTP requests -->
