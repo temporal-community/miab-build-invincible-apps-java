@@ -25,8 +25,8 @@ private final DurableActivities activities =
     int x = 0;
     while(x < 10) {
 
-      x = activities.addOne(x);
-      logger.info("{}", x);
+      x += 1;
+      activities.printVal(x);
       Workflow.sleep(Duration.ofSeconds(1));
 
     }
