@@ -25,7 +25,9 @@ private final DurableActivities activities =
     int x = 0;
     while(x < 10) {
 
+      // math is predicatable/deterministic, so we can do it in the workflow
       x += 1;
+      // io is not predictable, so we do it in an activity
       activities.printVal(x);
       Workflow.sleep(Duration.ofSeconds(1));
 
