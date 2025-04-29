@@ -165,7 +165,7 @@ The Temporal Service you started will not be used in this portion.
         The code should pick up where it left off, resuming from the next number in the count.
         It may take a few seconds for the code to resume, this is typical.
    
-    8. Open a browser tab to [http://127.0.0.1:8080](http://127.0.0.1:8080) to view the Temporal Web UI. Go to the Workflow Execution of this run and show the timeline view. You should see the timers and the call to the `addOne` function. Click on a single Activity Task and show the input and output. 
+    8. Open a browser tab to [http://127.0.0.1:8080](http://127.0.0.1:8080) to view the Temporal Web UI. Go to the Workflow Execution of this run and show the timeline view. You should see the Timers and the call to the `addOneAndPrintVal` method. Click on a single Activity Task and show the input and output. 
 
     9. Return to the top level of the git repository for the next part of the demo
     ```bash
@@ -190,7 +190,7 @@ We have provided scripts in areas below if you need them, but feel free to expla
 **Note:** This application differs from other Meetup in a Boxes due to Temporal Springboot library. 
 The patterns that are used with Springboot vary slightly from the patterns that are present with other Temporal Java applications.
 These differences will be mentioned in the slides, but are not worth going into too much detail.
-The primary difference is the Worker auto registration.
+The primary difference is the Worker auto registration. 
 Workflows, Activities, and Timers are implemented as expected.
 
 ### Running the Application
@@ -211,31 +211,27 @@ If not, run the following command to start the Temporal Service on port 8080 wit
     UI:      http://localhost:8080
     Metrics: http://localhost:65134/metrics
     ```
-2. In the second terminal, run the following commands to start the Temporal Springboot application and Workers:
-    1. Change directories into the `iplocate/application` directory:
+2. In the second terminal, run the following commands to start the Temporal Springboot Temporal application and Workers:
+    1. Change directories into the `iplocate` directory:
         ```bash
-        cd iplocate/application
+        cd iplocate
         ```
-    2. Compile the code:
+    2. Install the code the first time:
         ```bash
-        mvn clean compile
+        mvn install
         ```
-    3. Start the Springboot application
+    3. Start the Springboot Temporal application
         ```bash
-        mvn spring-boot:run
+        mvn -f application spring-boot:run
         ```
-3. In the third terminal, run the following commands to start the Temporal Springboot contoller and the GUI:
-    1. Change directories into the `iplocate/controller` directory:
+3. In the third terminal, run the following commands to start the Temporal Springboot controller and the GUI:
+    1. Change directories into the `iplocate` directory:
         ```bash
-        cd iplocate/controller
+        cd iplocate
         ```
-    2. Compile the code:
+    2. Start the Springboot application
         ```bash
-        mvn clean compile
-        ```
-    3. Start the Springboot application
-        ```bash
-        mvn spring-boot:run
+        mvn -f controller spring-boot:run
         ```
 4. Open a browser tab to [http://127.0.0.1:8000](http://127.0.0.1:8000) to view the web application.
 5. Open a browser tab to [http://127.0.0.1:8080](http://127.0.0.1:8080) to view the Temporal Web UI.
@@ -301,7 +297,7 @@ If a Timer fires and a Worker is not available, it will pick up when a Worker be
 2. Enter an audience member's name in the text field **Enter your name** in the web application.
 3. Press the **Show Demo Options** link on the page.
 4. In the **Sleep Duration (seconds)** section of the form, provide **10** in the **Number of Seconds** field and press the **Get Greeting** button.
-5. Immediately after, switch to the terminal with the Worker running, and press `CTRL-C` (or `CMD-C` if on Mac) to kill the Worker process.
+5. Immediately after, switch to the terminal with the Temporal Springbooth Application running, and press `CTRL-C` (or `CMD-C` if on Mac) to kill the Worker process.
     1. You want to be sure to kill the Worker before the Timer fires. 
 6. Wait ~10 seconds and show the audience that the results haven't appeared on the screen.
 7. Go to the Temporal Web UI and view the Event History.
@@ -309,7 +305,7 @@ If a Timer fires and a Worker is not available, it will pick up when a Worker be
     2. Explain to the audience this is because there is no Worker running.
 8. Go back to the terminal and restart the Worker:
     ```bash
-    mvn spring-boot:run
+    mvn -f application spring-boot:run
     ```
 9. Show that the Application UI was updated.
 10. Open the Temporal Web UI and show that the Workflow continued execution and everything looks normal, as if nothing ever happened.

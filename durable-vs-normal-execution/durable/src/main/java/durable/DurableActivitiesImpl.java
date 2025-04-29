@@ -3,8 +3,10 @@ package durable;
 public class DurableActivitiesImpl implements DurableActivities{
 
   @Override
-  public void printVal(int input){
+  public int addOneAndprintVal(int input){
+    input += 1;
     System.out.println(input);
+    return input;
   }
   
 }

@@ -5,6 +5,6 @@ import io.temporal.activity.ActivityInterface;
 @ActivityInterface
 public interface DurableActivities {
 
-  public void printVal(int input);
+  public int addOneAndprintVal(int input);
 
 }

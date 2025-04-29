@@ -25,10 +25,10 @@ private final DurableActivities activities =
     int x = 0;
     while(x < 10) {
 
-      // math is predicatable/deterministic, so we can do it in the workflow
-      x += 1;
-      // io is not predictable, so we do it in an activity
-      activities.printVal(x);
+      /* We could do the math in the loop, but to show off
+         the WebUI, we do it in the Activity. However, since
+         IO is not predictable, we should do it in an activity */
+      x = activities.addOneAndprintVal(x);
       Workflow.sleep(Duration.ofSeconds(1));
 
     }
