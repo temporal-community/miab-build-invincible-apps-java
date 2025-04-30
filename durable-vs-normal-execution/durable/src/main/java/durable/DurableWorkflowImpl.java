@@ -24,11 +24,11 @@ private final DurableActivities activities =
     logger.info("*** Counting to 10");
     int x = 0;
     while(x < 10) {
+      // Addition is determinisic, so it's safe to do in a Workflow
+      x += 1;
 
-      /* We could do the math in the loop, but to show off
-         the WebUI, we do it in the Activity. However, since
-         IO is not predictable, we should do it in an activity */
-      x = activities.addOneAndprintVal(x);
+      // Writing to stdout is something to be done in an activity
+      activities.printVal(x);
       Workflow.sleep(Duration.ofSeconds(1));
 
     }
